@@ -6,7 +6,7 @@ This script's purpose is to extract user's conversations from Bumble for Android
 
 Requirements:
 * [Python](https://www.python.org/downloads/)
-* [Scapy](https://flask.palletsprojects.com/en/2.0.x/)
+* [Flask](https://flask.palletsprojects.com/en/2.0.x/)
 
 ## Running
 1. Clone this repository and navigate to its main directory
