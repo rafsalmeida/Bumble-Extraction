@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html id="content">
+
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    /* Chat containers */
+    .container {
+      border: 2px solid #dedede;
+      background-color: #f1f1f1;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px 0;
+    }
+
+    /* Darker chat container */
+    .darker {
+      border-color: #ccc;
+      background-color: #ddd;
+    }
+
+    /* Lighter chat container */
+    .lighter {
+      border-color: rgb(230, 228, 228);
+      background-color: rgb(238, 238, 238);
+    }
+
+    /* Clear floats */
+    .container::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
+
+    /* Style images */
+    .container img {
+      float: left;
+      max-width: 60px;
+      width: 100%;
+      margin-right: 20px;
+      border-radius: 50%;
+    }
+
+    /* Style the right image */
+    .container img.right {
+      float: right;
+      margin-left: 20px;
+      margin-right: 0;
+    }
+
+    /* Style time text */
+    .time-right {
+      float: right;
+      color: rgb(53, 53, 53);
+    }
+
+    /* Style time text */
+    .time-left {
+      float: left;
+      color: rgb(53, 53, 53);
+    }
+
+    /* Style text */
+    .text-right {
+      float: right;
+      color: #000000;
+    }
+
+    /* Style text */
+    .text-left {
+      float: left;
+      color: #000000;
+    }
+
+    /* Style sender text */
+    .sender-right {
+      float: right;
+      color: #7e1010;
+    }
+
+    /* Style sender text */
+    .sender-left {
+      float: left;
+      color: #7e1010;
+    }
+  </style>
+</head>
+
+<body onload="myFunction()">
+
+  <h2>Chat Messages</h2>
+  <div id="container-inicial">
+
+  </div>
+
+  <button id="myButton2" name="button2" value=0 onclick="demoFromHTML()">Save To PDF</button>
+
+
+  <select id="selectConversation" onchange="changeMessages()">
+    <option>All Chats</option>
+  </select>
+
+  <div id="container-test">
+
+  </div>
+
+</body>
+
+</html>
+
+
+<script type="text/javascript">
+
+
+  function myFunction(data) {
+    var allConversationIds = [];
+
+    var messages = '{{ entries }}'
+    var json3 = JSON.parse(messages.replace(/&#34;/g, '"').replace(/\n/g, "\\n")
+                .replace(/\r/g, "\\r")
+                .replace(/\t/g, "\\t")
+                .replace(/\f/g, "\\f")
+);
+    var description = "";
+    description = '<h3>Number of total messages: '+ json3.length + '</h3><br>'
+    var div_container = document.getElementById("container-inicial");
+    div_container.innerHTML = description;
+
+    var htmlElements = "";
+
+    for (var i = 0; i < json3.length; i++) {
+      var conversationId = json3[i].conversation_id;
+
+      if (i > 0 && conversationId == json3[i - 1].conversation_id) {
+        if (json3[i].is_incoming == 1) {
+          htmlElements += '<div class="container darker">'
+            + '<img  alt="Avatar" class="left avatar" src=' + json3[i].sender_avatar_url + '>'
+            + '<span class="sender-left"> User: ' + json3[i].sender_name + '</span><br> '
+            + '<span class="time-left"> Date: ' + new Date(json3[i].created_timestamp) + '</span><br>'
+            + '<span class="text-left"> Type of Message: ' + json3[i].payload_type + '</span><br>'
+            + '<span class="text-left"> Message: ' + json3[i].text + '</span></div>';
+
+        } else {
+          htmlElements += '<div class="container lighter">'
+            + '<img  alt="Avatar" class="right avatar" src=' + json3[i].sender_avatar_url + '>'
+            + '<span class="sender-right"> User: ' + json3[i].sender_name + '</span><br> '
+            + '<span class="time-right"> Date: ' + new Date(json3[i].created_timestamp) + '</span><br>'
+            + '<span class="text-right"> Type of Message: ' + json3[i].payload_type + '</span><br>'
+            + '<span class="text-right"> Message: ' + json3[i].text + '</span></div>';
+        }
+
+
+      } else {
+        if (json3[i].is_incoming == 1) {
+          htmlElements += '<h1>--------</h1><div class="container darker">'
+            + '<img  alt="Avatar" class="left avatar" src=' + json3[i].sender_avatar_url + '>'
+            + '<span class="sender-left"> User: ' + json3[i].sender_name + '</span><br> '
+            + '<span class="time-left"> Date: ' + new Date(json3[i].created_timestamp) + '</span><br>'
+            + '<span class="text-left"> Type of Message: ' + json3[i].payload_type + '</span><br>'
+            + '<span class="text-left"> Message: ' + json3[i].text + '</span></div>';
+
+        } else {
+          htmlElements += '<h1>--------</h1><div class="container darker">'
+            + '<img  alt="Avatar" class="right avatar" src=' + json3[i].sender_avatar_url + '>'
+            + '<span class="sender-right"> User: ' + json3[i].sender_name + '</span><br> '
+            + '<span class="time-right"> Date: ' + new Date(json3[i].created_timestamp) + '</span><br>'
+            + '<span class="text-right"> Type of Message: ' + json3[i].payload_type + '</span><br>'
+            + '<span class="text-right"> Message: ' + json3[i].text + '</span></div>';
+        }
+
+      }
+
+      if (json3[i].is_incoming==1) {
+        allConversationIds.push(conversationId + " (" + json3[i].sender_name + ")");
+      }
+    }
+
+    var uniques = allConversationIds.filter(onlyUnique);
+    var container = document.getElementById("container-test");
+    container.innerHTML = htmlElements;
+
+    var select = document.getElementById("selectConversation");
+    if (select.length = 1) {
+      for (var i = 0; i < uniques.length; i++) {
+        var opt = uniques[i];
+        var el = document.createElement("option");
+        el.textContent = opt;
+        el.value = opt;
+        select.appendChild(el);
+      }
+    }
+  }
+
+  function changeMessages() {
+
+
+    var messages = '{{ entries }}'
+    var json3 = JSON.parse(messages.replace(/&#34;/g, '"').replace(/\n/g, "\\n")
+                .replace(/\r/g, "\\r")
+                .replace(/\t/g, "\\t")
+                .replace(/\f/g, "\\f")
+);
+      
+    var container = document.getElementById("container-test");
+    container.innerHTML = "";
+    var htmlElements = "";
+
+    var selectElement = document.getElementById("selectConversation");
+    if (String(selectElement.value) == "All Chats") {
+      myFunction()
+      return
+    }
+    var conversationId = selectElement.options[selectElement.selectedIndex].value.split(" ")[0];
+
+    for (var i = 0; i < json3.length; i++) {
+      if (i > 0 && areTheNumbersAlmostEqual(conversationId, json3[i].conversation_id)) {
+        if (json3[i].is_incoming == 1) {
+          htmlElements += '<div class="container darker">'
+            + '<img  alt="Avatar" class="left avatar" src=' + json3[i].sender_avatar_url + '>'
+            + '<span class="sender-left"> User: ' + json3[i].sender_name + '</span><br> '
+            + '<span class="time-left"> Date: ' + new Date(json3[i].created_timestamp) + '</span><br>'
+            + '<span class="text-left"> Type of Message: ' + json3[i].payload_type + '</span><br>'
+            + '<span class="text-left"> Message: ' + json3[i].text + '</span></div>';
+
+        } else {
+          htmlElements += '<div class="container darker">'
+            + '<img  alt="Avatar" class="right avatar" src=' + json3[i].sender_avatar_url + '>'
+            + '<span class="sender-right"> User: ' + json3[i].sender_name + '</span><br> '
+            + '<span class="time-right"> Date: ' + new Date(json3[i].created_timestamp) + '</span><br>'
+            + '<span class="text-right"> Type of Message: ' + json3[i].payload_type + '</span><br>'
+            + '<span class="text-right"> Message: ' + json3[i].text + '</span></div>';
+        }
+      } else {
+        if (json3[i].is_incoming == 1 && areTheNumbersAlmostEqual(conversationId, json3[i].conversation_id)) {
+          htmlElements += '<h1>--------</h1><div class="container darker">'
+            + '<img  alt="Avatar" class="left avatar" src=' + json3[i].sender_avatar_url + '>'
+            + '<span class="sender-left"> User: ' + json3[i].sender_name + '</span><br> '
+            + '<span class="time-left"> Date: ' + new Date(json3[i].created_timestamp) + '</span><br>'
+            + '<span class="text-left"> Type of Message: ' + json3[i].payload_type + '</span><br>'
+            + '<span class="text-left"> Message: ' + json3[i].text + '</span></div>';
+
+        } else {
+          if (areTheNumbersAlmostEqual(conversationId, json3[i].conversation_id)) {
+            htmlElements += '<h1>--------</h1><div class="container darker">'
+              + '<img  alt="Avatar" class="right avatar" src=' + json3[i].sender_avatar_url + '>'
+              + '<span class="sender-right"> User: ' + json3[i].sender_name + '</span><br> '
+              + '<span class="time-right"> Date: ' + new Date(json3[i].created_timestamp) + '</span><br>'
+              + '<span class="text-right"> Type of Message: ' + json3[i].payload_type + '</span><br>'
+              + '<span class="text-right"> Message: ' + json3[i].text + '</span></div>';
+          }
+        }
+      }
+    }
+    container.innerHTML = htmlElements;
+  }
+
+  function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+
+  const areTheNumbersAlmostEqual = (num1, num2) => {
+    return Math.abs(num1 - num2) < Number.EPSILON;
+  }
+
+  function demoFromHTML() {
+        window.print()
+    }
+
+</script>
