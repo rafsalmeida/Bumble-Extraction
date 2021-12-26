@@ -140,7 +140,7 @@
             + '<span class="sender-left"> User: ' + json3[i].sender_name + '</span><br> '
             + '<span class="time-left"> Date: ' + new Date(json3[i].created_timestamp) + '</span><br>'
             + '<span class="text-left"> Type of Message: ' + json3[i].payload_type + '</span><br>'
-            + '<span class="text-left"> Message: ' + json3[i].text + '</span></div>';
+            + '<span class="text-left"> Message Incoming: ' + json3[i].text + '</span></div>';
 
         } else {
           htmlElements += '<div class="container lighter">'
@@ -148,7 +148,7 @@
             + '<span class="sender-right"> User: ' + json3[i].sender_name + '</span><br> '
             + '<span class="time-right"> Date: ' + new Date(json3[i].created_timestamp) + '</span><br>'
             + '<span class="text-right"> Type of Message: ' + json3[i].payload_type + '</span><br>'
-            + '<span class="text-right"> Message: ' + json3[i].text + '</span></div>';
+            + '<span class="text-right"> Message Sent: ' + json3[i].text + '</span></div>';
         }
 
 
@@ -159,7 +159,7 @@
             + '<span class="sender-left"> User: ' + json3[i].sender_name + '</span><br> '
             + '<span class="time-left"> Date: ' + new Date(json3[i].created_timestamp) + '</span><br>'
             + '<span class="text-left"> Type of Message: ' + json3[i].payload_type + '</span><br>'
-            + '<span class="text-left"> Message: ' + json3[i].text + '</span></div>';
+            + '<span class="text-left"> Message Incoming: ' + json3[i].text + '</span></div>';
 
         } else {
           htmlElements += '<h1>--------</h1><div class="container darker">'
@@ -167,7 +167,7 @@
             + '<span class="sender-right"> User: ' + json3[i].sender_name + '</span><br> '
             + '<span class="time-right"> Date: ' + new Date(json3[i].created_timestamp) + '</span><br>'
             + '<span class="text-right"> Type of Message: ' + json3[i].payload_type + '</span><br>'
-            + '<span class="text-right"> Message: ' + json3[i].text + '</span></div>';
+            + '<span class="text-right"> Message Sent: ' + json3[i].text + '</span></div>';
         }
 
       }
@@ -222,7 +222,7 @@
             + '<span class="sender-left"> User: ' + json3[i].sender_name + '</span><br> '
             + '<span class="time-left"> Date: ' + new Date(json3[i].created_timestamp) + '</span><br>'
             + '<span class="text-left"> Type of Message: ' + json3[i].payload_type + '</span><br>'
-            + '<span class="text-left"> Message: ' + json3[i].text + '</span></div>';
+            + '<span class="text-left"> Message Incoming: ' + json3[i].text + '</span></div>';
 
         } else {
           htmlElements += '<div class="container darker">'
@@ -230,7 +230,7 @@
             + '<span class="sender-right"> User: ' + json3[i].sender_name + '</span><br> '
             + '<span class="time-right"> Date: ' + new Date(json3[i].created_timestamp) + '</span><br>'
             + '<span class="text-right"> Type of Message: ' + json3[i].payload_type + '</span><br>'
-            + '<span class="text-right"> Message: ' + json3[i].text + '</span></div>';
+            + '<span class="text-right"> Message Sent: ' + json3[i].text + '</span></div>';
         }
       } else {
         if (json3[i].is_incoming == 1 && areTheNumbersAlmostEqual(conversationId, json3[i].conversation_id)) {
@@ -239,7 +239,7 @@
             + '<span class="sender-left"> User: ' + json3[i].sender_name + '</span><br> '
             + '<span class="time-left"> Date: ' + new Date(json3[i].created_timestamp) + '</span><br>'
             + '<span class="text-left"> Type of Message: ' + json3[i].payload_type + '</span><br>'
-            + '<span class="text-left"> Message: ' + json3[i].text + '</span></div>';
+            + '<span class="text-left"> Message Incoming: ' + json3[i].text + '</span></div>';
 
         } else {
           if (areTheNumbersAlmostEqual(conversationId, json3[i].conversation_id)) {
@@ -248,7 +248,7 @@
               + '<span class="sender-right"> User: ' + json3[i].sender_name + '</span><br> '
               + '<span class="time-right"> Date: ' + new Date(json3[i].created_timestamp) + '</span><br>'
               + '<span class="text-right"> Type of Message: ' + json3[i].payload_type + '</span><br>'
-              + '<span class="text-right"> Message: ' + json3[i].text + '</span></div>';
+              + '<span class="text-right"> Message Sent: ' + json3[i].text + '</span></div>';
           }
         }
       }
